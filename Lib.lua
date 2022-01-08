@@ -87,8 +87,7 @@ end
 
 
 
-function Flux:Window(text, bottom,mainclr,toclose)
-	CloseBind = toclose or Enum.KeyCode.RightControl
+function Flux:Window(text, bottom,mainclr)
 	_G.PresetColor = mainclr or Color3.fromRGB(66, 134, 255)
 	local fs = false
 	local MainFrame = Instance.new("Frame")
@@ -189,21 +188,21 @@ function Flux:Window(text, bottom,mainclr,toclose)
 	MainFrame:TweenSize(UDim2.new(0, 706, 0, 484), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .6, true)
 	
 	local uitoggled = false
-		UserInputService.InputBegan:Connect(
-		function(io, p)
-			if io.KeyCode == CloseBind then
+		_G.toggleUiHere = function()
 				if uitoggled == false then
 					MainFrame:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .6, true)
 					uitoggled = true
-					wait(.5)
+					repeat wait() 
+					until MainFrame.Size.Y.Offset <= 1
 					FluxLib.Enabled = false
 				else
 					MainFrame:TweenSize(UDim2.new(0, 706, 0, 484), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .6, true)
+					repeat wait() 
+					until MainFrame.Size.Y.Offset > 1
 					FluxLib.Enabled = true
 					uitoggled = false
 				end
 			end
-		end
 	
 	function Flux:Notification(desc,buttontitle)
 		for i, v in next, MainFrame:GetChildren() do
